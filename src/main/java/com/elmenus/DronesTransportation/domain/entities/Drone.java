@@ -33,8 +33,8 @@ public class Drone {
     @Column(name = "weight_limit")
     private Double weightLimit;
 
-    @Min(0)
-    @Max(100)
+    @Max(value = 100, message = "batteryCapacity cannot be more than 100")
+    @Min(value = 0, message = "batteryCapacity cannot be less than 0")
     @NotNull
     @Column(name = "battery_capacity")
     private Integer batteryCapacity;

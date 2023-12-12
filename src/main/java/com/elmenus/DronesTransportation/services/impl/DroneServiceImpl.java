@@ -36,4 +36,16 @@ public class DroneServiceImpl implements DroneService {
         Optional<Drone> result = droneRepository.findById(serialNumber);
         return result.map(drone -> droneMapper.mapToDto(drone));
     }
+
+    @Override
+    public boolean isDroneExists(DroneDto droneDto) {
+        return droneRepository.existsById(droneDto.getSerialNumber());
+    }
+
+    @Override
+    public DroneDto save(DroneDto droneDto) {
+        Drone drone = droneMapper.mapToEntity(droneDto);
+        Drone savedDrone = droneRepository.save(drone);
+        return droneMapper.mapToDto(savedDrone);
+    }
 }

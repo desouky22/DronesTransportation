@@ -35,4 +35,15 @@ public class DroneController {
         }
         return new ResponseEntity<>("Drone not found with this ID", HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/{serialNumber}")
+    public ResponseEntity<?> createUpdateDroneWithId(@PathVariable String serialNumber, @RequestBody DroneDto droneDto){
+        droneDto.setSerialNumber(serialNumber);
+        boolean isDroneExists = droneService.isDroneExists(droneDto);
+        DroneDto savedDrone = droneService.save(droneDto);
+        if(isDroneExists){
+            return new ResponseEntity<>(savedDrone, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(savedDrone, HttpStatus.CREATED);
+    }
 }
