@@ -11,4 +11,5 @@ public interface DroneService {
     Optional<DroneDto> getDroneById(String serialNumber);
     boolean isDroneExists(DroneDto droneDto);
     DroneDto save(DroneDto droneDto);
+    boolean deleteById(String serialNumber);
 }

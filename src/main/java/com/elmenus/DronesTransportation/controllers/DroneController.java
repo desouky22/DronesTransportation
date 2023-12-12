@@ -46,4 +46,13 @@ public class DroneController {
         }
         return new ResponseEntity<>(savedDrone, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{serialNumber}")
+    public ResponseEntity<?> deleteDroneWithId(@PathVariable String serialNumber){
+        boolean deleted = droneService.deleteById(serialNumber);
+        if(deleted){
+            return new ResponseEntity<>("Deleted Successfully", HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>("There is no drone with this ID", HttpStatus.BAD_REQUEST);
+    }
 }

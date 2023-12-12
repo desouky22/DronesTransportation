@@ -48,4 +48,13 @@ public class DroneServiceImpl implements DroneService {
         Drone savedDrone = droneRepository.save(drone);
         return droneMapper.mapToDto(savedDrone);
     }
+
+    @Override
+    public boolean deleteById(String serialNumber) {
+        if(droneRepository.existsById(serialNumber)) {
+            droneRepository.deleteById(serialNumber);
+            return true;
+        }
+        return false;
+    }
 }
