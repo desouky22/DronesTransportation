@@ -1,7 +1,7 @@
 package com.elmenus.DronesTransportation.domain.entities;
 
 import com.elmenus.DronesTransportation.utils.ModelEnum;
-import com.elmenus.DronesTransportation.utils.State;
+import com.elmenus.DronesTransportation.utils.StateEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -42,5 +42,5 @@ public class Drone {
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name = "state")
-    private State state;
+    private StateEnum state;
 }

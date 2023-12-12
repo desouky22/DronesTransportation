@@ -1,6 +1,6 @@
 package com.elmenus.DronesTransportation.utils;
 
-public enum State {
+public enum StateEnum {
     IDLE,
     LOADING,
     LOADED,
