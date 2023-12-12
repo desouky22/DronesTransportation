@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -28,5 +29,11 @@ public class DroneServiceImpl implements DroneService {
     public List<DroneDto> getAllDrones() {
         List<Drone> drones = droneRepository.findAll();
         return drones.stream().map(drone -> droneMapper.mapToDto(drone)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<DroneDto> getDroneById(String serialNumber) {
+        Optional<Drone> result = droneRepository.findById(serialNumber);
+        return result.map(drone -> droneMapper.mapToDto(drone));
     }
 }
