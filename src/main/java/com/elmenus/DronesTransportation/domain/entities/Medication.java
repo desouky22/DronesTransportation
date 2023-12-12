@@ -33,7 +33,6 @@ public class Medication {
     private String code;
 
     @Lob
-    @NotNull
     @Column(name = "image")
     private Byte[] image;
 }

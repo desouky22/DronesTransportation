@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,5 +27,19 @@ public class MedicationServiceImpl implements MedicationService {
     public List<MedicationDto> getAllMedications() {
         List<Medication> result = medicationRepository.findAll();
         return  result.stream().map(medication -> medicationMapper.mapToDto(medication)).toList();
+    }
+
+
+    @Override
+    public Optional<MedicationDto> getMedicationById(Long id) {
+        Optional<Medication> result = medicationRepository.findById(id);
+        return result.map(medication -> medicationMapper.mapToDto(medication));
+    }
+
+    @Override
+    public MedicationDto createMedication(MedicationDto medicationDto) {
+        Medication medication = medicationMapper.mapToEntity(medicationDto);
+        Medication result = medicationRepository.save(medication);
+        return medicationMapper.mapToDto(result);
     }
 }

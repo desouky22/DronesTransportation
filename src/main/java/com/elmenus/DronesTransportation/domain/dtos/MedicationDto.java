@@ -14,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MedicationDto {
+    private Long id;
+
     @Pattern(regexp = "^[a-zA-Z0-9_-]+$")
     @NotBlank
     private String name;
@@ -26,6 +28,5 @@ public class MedicationDto {
     private String code;
 
     @Lob
-    @NotNull
     private Byte[] image;
 }
