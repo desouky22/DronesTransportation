@@ -2,6 +2,7 @@ package com.elmenus.DronesTransportation.controllers;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.services.DroneService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class DroneController {
     }
 
     @PutMapping("/{serialNumber}")
-    public ResponseEntity<?> createUpdateDroneWithId(@PathVariable String serialNumber, @RequestBody DroneDto droneDto){
+    public ResponseEntity<?> createUpdateDroneWithId(@PathVariable String serialNumber, @RequestBody @Valid DroneDto droneDto){
         droneDto.setSerialNumber(serialNumber);
         boolean isDroneExists = droneService.isDroneExists(droneDto);
         DroneDto savedDrone = droneService.save(droneDto);
