@@ -66,14 +66,4 @@ public class DroneServiceImpl implements DroneService {
         }
         throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
     }
-
-    @Override
-    public ResponseEntity<List<MedicationDto>> getMedicationsOnDroneById(String serialNumber) {
-        boolean exist = droneRepository.existsById(serialNumber);
-        if(exist){
-            List<MedicationDto> result = droneRepository.findMedicationsByDroneId(serialNumber);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-        throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
-    }
 }

@@ -12,5 +12,4 @@ public interface DroneService {
     boolean isDroneExists(DroneDto droneDto);
     DroneDto save(DroneDto droneDto);
     void deleteById(String serialNumber);
-    ResponseEntity<List<MedicationDto>> getMedicationsOnDroneById(String serialNumber);
 }

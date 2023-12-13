@@ -10,7 +10,4 @@ import java.util.List;
 
 @Repository
 public interface DroneRepository extends JpaRepository<Drone, String> {
-
-    @Query(value = "select m.id as id, m.name as name, m.code as code, m.weight as weight, m.drone_id as drone_id, m.image as image from drones d join medications m on m.drone_id = d.serial_number", nativeQuery = true)
-    List<MedicationDto> findMedicationsByDroneId(String serialNumber);
 }
