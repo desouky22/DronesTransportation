@@ -50,4 +50,15 @@ public class MedicationServiceImpl implements MedicationService {
         Medication result = medicationRepository.save(medication);
         return medicationMapper.mapToDto(result);
     }
+
+    @Override
+    public MedicationDto updateMedication(MedicationDto medicationDto) {
+        Optional<Medication> medication = medicationRepository.findById(medicationDto.getId());
+        if(medication.isPresent()){
+            Medication updatedMedication = medicationMapper.mapToEntity(medicationDto);
+            Medication saved = medicationRepository.save(updatedMedication);
+            return medicationMapper.mapToDto(saved);
+        }
+        throw new RecordNotFoundException("There is no Medication with ID = " + medicationDto.getId());
+    }
 }

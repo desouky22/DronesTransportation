@@ -42,7 +42,7 @@ public class MedicationController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "", method = POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(path = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<MedicationDto> createMedication(@RequestPart MultipartFile image,
                                    @RequestPart @Pattern(regexp = "^[a-zA-Z0-9_-]+$") @NotBlank String name,
                                    @RequestPart @Pattern(regexp = "^[A-Z0-9_]+$") @NotBlank String code,
@@ -58,4 +58,24 @@ public class MedicationController {
         MedicationDto savedMedication = medicationService.createMedication(medicationDto);
         return new ResponseEntity<>(savedMedication, HttpStatus.CREATED);
     }
+
+    @PutMapping(path = "/{id}", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<MedicationDto> updateMedication(@PathVariable Long id,
+                                                          @RequestPart MultipartFile image,
+                                                          @RequestPart @Pattern(regexp = "^[a-zA-Z0-9_-]+$") @NotBlank String name,
+                                                          @RequestPart @Pattern(regexp = "^[A-Z0-9_]+$") @NotBlank String code,
+                                                          @RequestPart @Pattern(regexp = "^[+]?[0-9]*\\.?[0-9]*$") @NotBlank String weight
+    ) throws IOException {
+        MedicationDto medicationDto = MedicationDto.builder()
+                .image(image.getBytes())
+                .code(code)
+                .weight(Double.valueOf(weight))
+                .name(name)
+                .id(id)
+                .build();
+
+        MedicationDto savedMedication = medicationService.updateMedication(medicationDto);
+        return new ResponseEntity<>(savedMedication, HttpStatus.OK);
+    }
+
 }
