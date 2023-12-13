@@ -29,12 +29,9 @@ public class DroneController {
     }
 
     @GetMapping("/{serialNumber}")
-    public ResponseEntity<?> getDroneWithId(@PathVariable String serialNumber){
-        Optional<DroneDto> droneDto = droneService.getDroneById(serialNumber);
-        if(droneDto.isPresent()){
-            return new ResponseEntity<>(droneDto.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Drone not found with this ID", HttpStatus.NOT_FOUND);
+    public ResponseEntity<DroneDto> getDroneWithId(@PathVariable String serialNumber){
+        DroneDto droneDto = droneService.getDroneById(serialNumber);
+        return new ResponseEntity<>(droneDto, HttpStatus.OK);
     }
 
     @PutMapping("/{serialNumber}")

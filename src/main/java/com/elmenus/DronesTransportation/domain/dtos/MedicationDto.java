@@ -28,5 +28,5 @@ public class MedicationDto {
     private String code;
 
     @Lob
-    private Byte[] image;
+    private byte[] image;
 }

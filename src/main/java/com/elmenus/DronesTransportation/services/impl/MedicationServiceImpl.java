@@ -2,6 +2,7 @@ package com.elmenus.DronesTransportation.services.impl;
 
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.domain.entities.Medication;
+import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.MedicationRepository;
 import com.elmenus.DronesTransportation.services.MedicationService;
@@ -31,9 +32,12 @@ public class MedicationServiceImpl implements MedicationService {
 
 
     @Override
-    public Optional<MedicationDto> getMedicationById(Long id) {
+    public MedicationDto getMedicationById(Long id) {
         Optional<Medication> result = medicationRepository.findById(id);
-        return result.map(medication -> medicationMapper.mapToDto(medication));
+        if(result.isPresent())
+            return medicationMapper.mapToDto(result.get());
+
+        throw new RecordNotFoundException("There is no medication with ID = " + id);
     }
 
     @Override

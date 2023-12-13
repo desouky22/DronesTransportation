@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 public class DroneDto {
     @Size(min = 1, message = "{validation.name.size.too_short}")
     @Size(max = 100, message = "{validation.name.size.too_long}")
+    @NotNull
     private String serialNumber;
 
     @Enumerated(EnumType.STRING)

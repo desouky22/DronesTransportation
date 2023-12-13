@@ -34,5 +34,5 @@ public class Medication {
 
     @Lob
     @Column(name = "image")
-    private Byte[] image;
+    private byte[] image;
 }
