@@ -2,7 +2,6 @@ package com.elmenus.DronesTransportation.controllers;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
-import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.services.MedicationService;
 import jakarta.validation.Valid;

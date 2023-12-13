@@ -50,6 +50,3 @@ public class Medication {
     @Column(name = "drone_id")
     private String droneId;
 }
-
-
-//GET /drones/serialNumber/medications

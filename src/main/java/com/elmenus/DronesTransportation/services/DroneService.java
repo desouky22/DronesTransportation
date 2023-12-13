@@ -5,7 +5,6 @@ import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DroneService {
     List<DroneDto> getAllDrones();
