@@ -1,6 +1,8 @@
 package com.elmenus.DronesTransportation.services;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
+import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +13,5 @@ public interface DroneService {
     boolean isDroneExists(DroneDto droneDto);
     DroneDto save(DroneDto droneDto);
     void deleteById(String serialNumber);
+    ResponseEntity<List<MedicationDto>> getMedicationsOnDroneById(String serialNumber);
 }

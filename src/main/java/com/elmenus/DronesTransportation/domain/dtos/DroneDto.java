@@ -1,5 +1,6 @@
 package com.elmenus.DronesTransportation.domain.dtos;
 
+import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.utils.ModelEnum;
 import com.elmenus.DronesTransportation.utils.StateEnum;
 import jakarta.persistence.EnumType;
@@ -9,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @Data
@@ -38,4 +41,6 @@ public class DroneDto {
     @Enumerated(EnumType.STRING)
     @NotNull
     private StateEnum state;
+
+    private List<Medication> medicationList;
 }

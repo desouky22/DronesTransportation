@@ -17,6 +17,7 @@ public class DroneMapperImpl implements DroneMapper {
                 .model(drone.getModel())
                 .batteryCapacity(drone.getBatteryCapacity())
                 .weightLimit(drone.getWeightLimit())
+                .medicationList(drone.getMedicationList())
                 .build();
     }
 
@@ -30,6 +31,7 @@ public class DroneMapperImpl implements DroneMapper {
                 .model(droneDto.getModel())
                 .state(droneDto.getState())
                 .weightLimit(droneDto.getWeightLimit())
+                .medicationList(droneDto.getMedicationList())
                 .build();
     }
 }

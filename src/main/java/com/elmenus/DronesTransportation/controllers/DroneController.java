@@ -1,6 +1,7 @@
 package com.elmenus.DronesTransportation.controllers;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
+import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.services.DroneService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,11 @@ public class DroneController {
     @DeleteMapping("/{serialNumber}")
     public ResponseEntity<?> deleteDroneById(@PathVariable String serialNumber){
        droneService.deleteById(serialNumber);
-       return new ResponseEntity<>("Medication with serialNumber = " + serialNumber + " deleted successfully", HttpStatus.NO_CONTENT);    }
+       return new ResponseEntity<>("Medication with serialNumber = " + serialNumber + " deleted successfully", HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/{serialNumber}/medications")
+    public ResponseEntity<List<MedicationDto>> getAllMedicationsOnDroneById(@PathVariable String serialNumber){
+        return droneService.getMedicationsOnDroneById(serialNumber);
+    }
 }

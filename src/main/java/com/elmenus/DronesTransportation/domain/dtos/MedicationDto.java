@@ -1,5 +1,6 @@
 package com.elmenus.DronesTransportation.domain.dtos;
 
+import com.elmenus.DronesTransportation.domain.entities.Drone;
 import jakarta.persistence.Lob;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -30,4 +31,6 @@ public class MedicationDto {
 
     @Lob
     private byte[] image;
+
+    private Drone drone;
 }

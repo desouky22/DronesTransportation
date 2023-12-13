@@ -1,12 +1,18 @@
 package com.elmenus.DronesTransportation.services.impl;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
+import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
+import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.DroneMapper;
+import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,11 +25,13 @@ import java.util.stream.Collectors;
 public class DroneServiceImpl implements DroneService {
     private DroneRepository droneRepository;
     private DroneMapper droneMapper;
+    private MedicationMapper medicationMapper;
 
     @Autowired
-    public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper){
+    public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper, MedicationMapper medicationMapper){
         this.droneRepository = droneRepository;
         this.droneMapper = droneMapper;
+        this.medicationMapper = medicationMapper;
     }
 
     @Override
@@ -57,6 +65,17 @@ public class DroneServiceImpl implements DroneService {
         if(droneRepository.existsById(serialNumber)){
             droneRepository.deleteById(serialNumber);
             return;
+        }
+        throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
+    }
+
+    @Override
+    public ResponseEntity<List<MedicationDto>> getMedicationsOnDroneById(String serialNumber) {
+        Optional<Drone> result = droneRepository.findById(serialNumber);
+        if(result.isPresent()){
+            List<Medication> medicationList = result.get().getMedicationList();
+            List<MedicationDto> medicationDtoList = medicationList.stream().map(medication -> medicationMapper.mapToDto(medication)).toList();
+            return new ResponseEntity<>(medicationDtoList, HttpStatus.OK);
         }
         throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
     }

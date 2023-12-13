@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -43,4 +45,12 @@ public class Drone {
     @NotNull
     @Column(name = "state")
     private StateEnum state;
+
+    @OneToMany(mappedBy = "drone", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    })
+    private List<Medication> medicationList;
 }

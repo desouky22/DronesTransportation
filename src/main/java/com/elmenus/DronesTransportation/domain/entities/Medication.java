@@ -35,4 +35,13 @@ public class Medication {
     @Lob
     @Column(name = "image")
     private byte[] image;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {
+            CascadeType.DETACH,
+            CascadeType.MERGE,
+            CascadeType.PERSIST,
+            CascadeType.REFRESH
+    })
+    @JoinColumn(name = "drone_id")
+    private Drone drone;
 }
