@@ -2,6 +2,7 @@ package com.elmenus.DronesTransportation.services.impl;
 
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.domain.entities.Medication;
+import com.elmenus.DronesTransportation.errors.DuplicateException;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.MedicationRepository;
@@ -30,7 +31,6 @@ public class MedicationServiceImpl implements MedicationService {
         return  result.stream().map(medication -> medicationMapper.mapToDto(medication)).toList();
     }
 
-
     @Override
     public MedicationDto getMedicationById(Long id) {
         Optional<Medication> result = medicationRepository.findById(id);
@@ -42,6 +42,10 @@ public class MedicationServiceImpl implements MedicationService {
 
     @Override
     public MedicationDto createMedication(MedicationDto medicationDto) {
+        String code = medicationDto.getCode();
+        if(medicationRepository.findByCode(code).isPresent()){
+            throw new DuplicateException("There is another medication with code = " + code);
+        }
         Medication medication = medicationMapper.mapToEntity(medicationDto);
         Medication result = medicationRepository.save(medication);
         return medicationMapper.mapToDto(result);

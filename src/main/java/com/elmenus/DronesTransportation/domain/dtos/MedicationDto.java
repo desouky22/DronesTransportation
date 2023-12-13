@@ -1,6 +1,7 @@
 package com.elmenus.DronesTransportation.domain.dtos;
 
 import jakarta.persistence.Lob;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

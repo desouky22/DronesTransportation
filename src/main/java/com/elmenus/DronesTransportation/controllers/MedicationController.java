@@ -40,11 +40,6 @@ public class MedicationController {
     public ResponseEntity<?> getMedicationById(@PathVariable Long id){
         MedicationDto result = medicationService.getMedicationById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
-
-        //        if(result.isPresent()){
-//            return new ResponseEntity<>(result.get(), HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>("There is no medication with this ID", HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path = "", method = POST, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })

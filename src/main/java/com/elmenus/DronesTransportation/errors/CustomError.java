@@ -16,11 +16,9 @@ public class CustomError extends DefaultErrorAttributes {
 
         response.put("success", false);
         response.put("status", response.get("error"));
-        response.put("exception", response.get("message"));
-        response.put("details", Collections.singletonList(response.get("message")));
+        response.put("details", Collections.singletonList(response.get("errors")));
         response.remove("errors");
         response.remove("error");
-        response.remove("path");
         response.remove("trace");
 
         return response;
