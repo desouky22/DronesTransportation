@@ -37,7 +37,7 @@ public class DroneServiceImpl implements DroneService {
         Optional<Drone> result = droneRepository.findById(serialNumber);
         if(result.isPresent())
             return droneMapper.mapToDto(result.get());
-        throw new RecordNotFoundException("There is no Drone with ID = " + serialNumber);
+        throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
     }
 
     @Override
@@ -53,11 +53,11 @@ public class DroneServiceImpl implements DroneService {
     }
 
     @Override
-    public boolean deleteById(String serialNumber) {
-        if(droneRepository.existsById(serialNumber)) {
+    public void deleteById(String serialNumber) {
+        if(droneRepository.existsById(serialNumber)){
             droneRepository.deleteById(serialNumber);
-            return true;
+            return;
         }
-        return false;
+        throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
     }
 }

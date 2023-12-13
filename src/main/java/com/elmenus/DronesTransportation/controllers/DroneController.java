@@ -29,13 +29,13 @@ public class DroneController {
     }
 
     @GetMapping("/{serialNumber}")
-    public ResponseEntity<DroneDto> getDroneWithId(@PathVariable String serialNumber){
+    public ResponseEntity<DroneDto> getDroneById(@PathVariable String serialNumber){
         DroneDto droneDto = droneService.getDroneById(serialNumber);
         return new ResponseEntity<>(droneDto, HttpStatus.OK);
     }
 
     @PutMapping("/{serialNumber}")
-    public ResponseEntity<?> createUpdateDroneWithId(@PathVariable String serialNumber, @RequestBody @Valid DroneDto droneDto){
+    public ResponseEntity<?> createUpdateDroneById(@PathVariable String serialNumber, @RequestBody @Valid DroneDto droneDto){
         droneDto.setSerialNumber(serialNumber);
         boolean isDroneExists = droneService.isDroneExists(droneDto);
         DroneDto savedDrone = droneService.save(droneDto);
@@ -46,11 +46,7 @@ public class DroneController {
     }
 
     @DeleteMapping("/{serialNumber}")
-    public ResponseEntity<?> deleteDroneWithId(@PathVariable String serialNumber){
-        boolean deleted = droneService.deleteById(serialNumber);
-        if(deleted){
-            return new ResponseEntity<>("Deleted Successfully", HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>("There is no drone with this ID", HttpStatus.BAD_REQUEST);
-    }
+    public ResponseEntity<?> deleteDroneById(@PathVariable String serialNumber){
+       droneService.deleteById(serialNumber);
+       return new ResponseEntity<>("Medication with serialNumber = " + serialNumber + " deleted successfully", HttpStatus.NO_CONTENT);    }
 }
