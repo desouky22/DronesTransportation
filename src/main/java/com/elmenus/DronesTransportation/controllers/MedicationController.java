@@ -60,7 +60,9 @@ public class MedicationController {
                                                           @RequestPart MultipartFile image,
                                                           @RequestPart @Pattern(regexp = "^[a-zA-Z0-9_-]+$") @NotBlank String name,
                                                           @RequestPart @Pattern(regexp = "^[A-Z0-9_]+$") @NotBlank String code,
-                                                          @RequestPart @Pattern(regexp = "^[+]?[0-9]*\\.?[0-9]*$") @NotBlank String weight
+                                                          @RequestPart @Pattern(regexp = "^[+]?[0-9]*\\.?[0-9]*$") @NotBlank String weight,
+                                                          @RequestPart String droneId
+
     ) throws IOException {
         MedicationDto medicationDto = MedicationDto.builder()
                 .image(image.getBytes())
@@ -68,6 +70,7 @@ public class MedicationController {
                 .weight(Double.valueOf(weight))
                 .name(name)
                 .id(id)
+                .droneId(droneId)
                 .build();
 
         MedicationDto savedMedication = medicationService.updateMedication(medicationDto);

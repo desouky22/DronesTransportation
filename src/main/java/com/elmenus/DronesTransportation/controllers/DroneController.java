@@ -2,7 +2,9 @@ package com.elmenus.DronesTransportation.controllers;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
+import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.services.DroneService;
+import com.elmenus.DronesTransportation.services.MedicationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,17 +12,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
 @RequestMapping("/drones")
 public class DroneController {
     private DroneService droneService;
+    private MedicationService medicationService;
 
     @Autowired
-    public DroneController(DroneService droneService){
+    public DroneController(DroneService droneService, MedicationService medicationService){
         this.droneService = droneService;
+        this.medicationService = medicationService;
     }
 
     @GetMapping
@@ -54,6 +57,7 @@ public class DroneController {
 
     @GetMapping("/{serialNumber}/medications")
     public ResponseEntity<List<MedicationDto>> getAllMedicationsOnDroneById(@PathVariable String serialNumber){
-        return droneService.getMedicationsOnDroneById(serialNumber);
+        List<MedicationDto> result =  medicationService.findByDroneId(serialNumber);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

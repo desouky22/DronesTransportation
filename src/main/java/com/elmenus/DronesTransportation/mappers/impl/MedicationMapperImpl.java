@@ -15,7 +15,7 @@ public class MedicationMapperImpl implements MedicationMapper {
                 .name(medication.getName())
                 .weight(medication.getWeight())
                 .image(medication.getImage())
-                .drone(medication.getDrone())
+                .droneId(medication.getDroneId())
                 .build();
     }
 
@@ -27,7 +27,7 @@ public class MedicationMapperImpl implements MedicationMapper {
                 .weight(medicationDto.getWeight())
                 .name(medicationDto.getName())
                 .image(medicationDto.getImage())
-                .drone(medicationDto.getDrone())
+                .droneId(medicationDto.getDroneId())
                 .build();
     }
 }

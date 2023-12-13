@@ -1,5 +1,6 @@
 package com.elmenus.DronesTransportation.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -42,6 +43,13 @@ public class Medication {
             CascadeType.PERSIST,
             CascadeType.REFRESH
     })
-    @JoinColumn(name = "drone_id")
+    @JoinColumn(name = "drone_id", insertable = false, updatable = false)
+    @JsonIgnore
     private Drone drone;
+
+    @Column(name = "drone_id")
+    private String droneId;
 }
+
+
+//GET /drones/serialNumber/medications

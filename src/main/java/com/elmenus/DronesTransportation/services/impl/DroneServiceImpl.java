@@ -71,11 +71,10 @@ public class DroneServiceImpl implements DroneService {
 
     @Override
     public ResponseEntity<List<MedicationDto>> getMedicationsOnDroneById(String serialNumber) {
-        Optional<Drone> result = droneRepository.findById(serialNumber);
-        if(result.isPresent()){
-            List<Medication> medicationList = result.get().getMedicationList();
-            List<MedicationDto> medicationDtoList = medicationList.stream().map(medication -> medicationMapper.mapToDto(medication)).toList();
-            return new ResponseEntity<>(medicationDtoList, HttpStatus.OK);
+        boolean exist = droneRepository.existsById(serialNumber);
+        if(exist){
+            List<MedicationDto> result = droneRepository.findMedicationsByDroneId(serialNumber);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
         throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicationServiceImpl implements MedicationService {
@@ -68,5 +69,13 @@ public class MedicationServiceImpl implements MedicationService {
             return;
         }
         throw new RecordNotFoundException("There is no medication with ID = " + id);
+    }
+
+    @Override
+    public List<MedicationDto> findByDroneId(String serialNumber) {
+        List<Medication> result = medicationRepository.findByDroneId(serialNumber);
+        return result.stream().map(medication ->
+            medicationMapper.mapToDto(medication)
+        ).collect(Collectors.toList());
     }
 }

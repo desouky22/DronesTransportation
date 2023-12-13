@@ -2,6 +2,7 @@ package com.elmenus.DronesTransportation.domain.entities;
 
 import com.elmenus.DronesTransportation.utils.ModelEnum;
 import com.elmenus.DronesTransportation.utils.StateEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -52,5 +54,6 @@ public class Drone {
             CascadeType.PERSIST,
             CascadeType.REFRESH
     })
+    @JsonBackReference
     private List<Medication> medicationList;
 }

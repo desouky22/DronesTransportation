@@ -12,4 +12,5 @@ public interface MedicationService {
     MedicationDto updateMedication(MedicationDto medicationDto);
 
     void deleteMedicationById(Long id);
+    List<MedicationDto> findByDroneId(String serialNumber);
 }
