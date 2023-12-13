@@ -78,4 +78,10 @@ public class MedicationController {
         return new ResponseEntity<>(savedMedication, HttpStatus.OK);
     }
 
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteMedication(@PathVariable Long id){
+        medicationService.deleteMedicationById(id);
+        return new ResponseEntity<>("Medication with ID = " + id + " deleted successfully", HttpStatus.NO_CONTENT);
+    }
 }

@@ -10,4 +10,6 @@ public interface MedicationService {
     List<MedicationDto> getAllMedications();
     MedicationDto createMedication(MedicationDto medicationDto);
     MedicationDto updateMedication(MedicationDto medicationDto);
+
+    void deleteMedicationById(Long id);
 }

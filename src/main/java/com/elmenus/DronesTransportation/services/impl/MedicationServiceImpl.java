@@ -61,4 +61,13 @@ public class MedicationServiceImpl implements MedicationService {
         }
         throw new RecordNotFoundException("There is no Medication with ID = " + medicationDto.getId());
     }
+
+    @Override
+    public void deleteMedicationById(Long id) {
+        if(medicationRepository.existsById(id)){
+            medicationRepository.deleteById(id);
+            return;
+        }
+        throw new RecordNotFoundException("There is no medication with ID = " + id);
+    }
 }
