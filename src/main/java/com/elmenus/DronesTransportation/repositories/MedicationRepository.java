@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface MedicationRepository extends JpaRepository<Medication, Long> {
     Optional<Medication> findByCode(String code);
     List<Medication> findByDroneId(String droneId);
+    List<Medication> findAllByCode(String code);
 }

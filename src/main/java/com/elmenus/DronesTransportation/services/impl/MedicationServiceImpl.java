@@ -1,16 +1,20 @@
 package com.elmenus.DronesTransportation.services.impl;
 
+import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
+import com.elmenus.DronesTransportation.domain.entities.Drone;
 import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.errors.DuplicateException;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.MedicationRepository;
+import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.services.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,10 +23,13 @@ public class MedicationServiceImpl implements MedicationService {
     private MedicationRepository medicationRepository;
     private MedicationMapper medicationMapper;
 
+    private DroneService droneService;
+
     @Autowired
-    public MedicationServiceImpl(MedicationRepository medicationRepository, MedicationMapper medicationMapper){
+    public MedicationServiceImpl(MedicationRepository medicationRepository, MedicationMapper medicationMapper, DroneService droneService){
         this.medicationRepository = medicationRepository;
         this.medicationMapper = medicationMapper;
+        this.droneService = droneService;
     }
 
     @Override
@@ -43,28 +50,62 @@ public class MedicationServiceImpl implements MedicationService {
     @Override
     public MedicationDto createMedication(MedicationDto medicationDto) {
         String code = medicationDto.getCode();
-        if(medicationRepository.findByCode(code).isPresent()){
+        Optional<Medication> medicationWithCode = medicationRepository.findByCode(code);
+        if(medicationWithCode.isPresent()){
             throw new DuplicateException("There is another medication with code = " + code);
         }
-        Medication medication = medicationMapper.mapToEntity(medicationDto);
-        Medication result = medicationRepository.save(medication);
+        if(medicationDto.getDroneId() != null) {
+            DroneDto drone = droneService.getDroneById(medicationDto.getDroneId());
+            Double totalWeight = 0.0;
+            for(Medication m: drone.getMedicationList()){
+                totalWeight += m.getWeight();
+            }
+            if(totalWeight + medicationDto.getWeight() > drone.getWeightLimit()){
+                throw new RuntimeException("Cannot add this medication to this drone because of the weight limit");
+            }
+        }
+
+        Medication mappedMedication = medicationMapper.mapToEntity(medicationDto);
+        Medication result = medicationRepository.save(mappedMedication);
         return medicationMapper.mapToDto(result);
     }
 
     @Override
     public MedicationDto updateMedication(MedicationDto medicationDto) {
+        String code = medicationDto.getCode();
         Optional<Medication> medication = medicationRepository.findById(medicationDto.getId());
-        if(medication.isPresent()){
-            Medication updatedMedication = medicationMapper.mapToEntity(medicationDto);
-            Medication saved = medicationRepository.save(updatedMedication);
-            return medicationMapper.mapToDto(saved);
+        if(medication.isEmpty()){
+            throw new RecordNotFoundException("There is no medication with ID = " + medicationDto.getId());
         }
-        throw new RecordNotFoundException("There is no Medication with ID = " + medicationDto.getId());
+        Optional<Medication> medicationWithCode = medicationRepository.findByCode(code);
+        if(medicationWithCode.isPresent() && !Objects.equals(medicationWithCode.get().getId(), medicationDto.getId())){
+            throw new DuplicateException("There is another medication with code = " + code);
+        }
+        if(medicationDto.getDroneId() != null) {
+            DroneDto drone = droneService.getDroneById(medicationDto.getDroneId());
+            Double totalWeight = 0.0;
+            for(Medication m: drone.getMedicationList()){
+                totalWeight += m.getWeight();
+            }
+            if(totalWeight + medicationDto.getWeight() > drone.getWeightLimit()){
+                throw new RuntimeException("Cannot add this medication to this drone because of the weight limit");
+            }
+        }
+        Medication updatedMedication = medicationMapper.mapToEntity(medicationDto);
+        Medication saved = medicationRepository.save(updatedMedication);
+        return medicationMapper.mapToDto(saved);
     }
 
     @Override
     public void deleteMedicationById(Long id) {
-        if(medicationRepository.existsById(id)){
+        Optional<Medication> medication = medicationRepository.findById(id);
+        if(medication.isPresent()){
+//            String droneSerialNumber = medication.get().getDroneId();
+//            DroneDto droneDto = droneService.getDroneById(droneSerialNumber);
+//            List<Medication> medications =  droneDto.getMedicationList();
+//            medications.remove(medication.get());
+//            droneDto.setMedicationList(medications);
+//            droneService.save(droneDto);
             medicationRepository.deleteById(id);
             return;
         }

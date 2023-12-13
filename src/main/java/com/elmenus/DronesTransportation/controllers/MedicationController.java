@@ -2,8 +2,11 @@ package com.elmenus.DronesTransportation.controllers;
 
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.services.MedicationService;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,15 +42,18 @@ public class MedicationController {
 
     @PostMapping(path = "", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
     public ResponseEntity<MedicationDto> createMedication(@RequestPart MultipartFile image,
-                                   @RequestPart @Pattern(regexp = "^[a-zA-Z0-9_-]+$") @NotBlank String name,
-                                   @RequestPart @Pattern(regexp = "^[A-Z0-9_]+$") @NotBlank String code,
-                                   @RequestPart @Pattern(regexp = "^[+]?[0-9]*\\.?[0-9]*$") @NotBlank String weight
-                                   ) throws IOException {
+                                                          @RequestPart @Pattern(regexp = "^[a-zA-Z0-9_-]+$") @NotBlank String name,
+                                                          @RequestPart @Pattern(regexp = "^[A-Z0-9_]+$") @NotBlank String code,
+                                                          @RequestPart @Pattern(regexp = "^[+]?[0-9]*\\.?[0-9]*$") @NotBlank String weight,
+                                                          @RequestPart @Size(max = 100) @Nullable String droneId
+
+    ) throws IOException {
         MedicationDto medicationDto = MedicationDto.builder()
                 .image(image.getBytes())
                 .code(code)
                 .weight(Double.valueOf(weight))
                 .name(name)
+                .droneId(droneId)
                 .build();
 
         MedicationDto savedMedication = medicationService.createMedication(medicationDto);
@@ -60,7 +66,7 @@ public class MedicationController {
                                                           @RequestPart @Pattern(regexp = "^[a-zA-Z0-9_-]+$") @NotBlank String name,
                                                           @RequestPart @Pattern(regexp = "^[A-Z0-9_]+$") @NotBlank String code,
                                                           @RequestPart @Pattern(regexp = "^[+]?[0-9]*\\.?[0-9]*$") @NotBlank String weight,
-                                                          @RequestPart String droneId
+                                                          @RequestPart @Size(max = 100) String droneId
 
     ) throws IOException {
         MedicationDto medicationDto = MedicationDto.builder()
