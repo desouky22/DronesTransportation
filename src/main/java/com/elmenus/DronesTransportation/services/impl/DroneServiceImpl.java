@@ -64,7 +64,6 @@ public class DroneServiceImpl implements DroneService {
                 throw new RuntimeException("Cannot make the drone with state = " + drone.getState() + "with battery capacity = "+ drone.getBatteryCapacity());
             }
         }
-
         Drone savedDrone = droneRepository.save(drone);
         return droneMapper.mapToDto(savedDrone);
     }

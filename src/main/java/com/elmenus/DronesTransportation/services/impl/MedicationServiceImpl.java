@@ -10,6 +10,7 @@ import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.MedicationRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.services.MedicationService;
+import com.elmenus.DronesTransportation.utils.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,9 @@ public class MedicationServiceImpl implements MedicationService {
         }
         if(medicationDto.getDroneId() != null) {
             DroneDto drone = droneService.getDroneById(medicationDto.getDroneId());
+            if(drone.getState() != StateEnum.IDLE){
+                throw new RuntimeException("cannot assign medication with ID = " + medicationDto.getId() + " to a drone that has a state of " + drone.getState());
+            }
             Double totalWeight = 0.0;
             for(Medication m: drone.getMedicationList()){
                 totalWeight += m.getWeight();
@@ -83,6 +87,9 @@ public class MedicationServiceImpl implements MedicationService {
         }
         if(medicationDto.getDroneId() != null) {
             DroneDto drone = droneService.getDroneById(medicationDto.getDroneId());
+            if(drone.getState() != StateEnum.IDLE){
+                throw new RuntimeException("cannot assign medication with ID = " + medicationDto.getId() + " to a drone that has a state of " + drone.getState());
+            }
             Double totalWeight = 0.0;
             for(Medication m: drone.getMedicationList()){
                 totalWeight += m.getWeight();
