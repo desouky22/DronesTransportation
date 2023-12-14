@@ -107,12 +107,12 @@ public class MedicationServiceImpl implements MedicationService {
     public void deleteMedicationById(Long id) {
         Optional<Medication> medication = medicationRepository.findById(id);
         if(medication.isPresent()){
-//            String droneSerialNumber = medication.get().getDroneId();
-//            DroneDto droneDto = droneService.getDroneById(droneSerialNumber);
-//            List<Medication> medications =  droneDto.getMedicationList();
-//            medications.remove(medication.get());
-//            droneDto.setMedicationList(medications);
-//            droneService.save(droneDto);
+            String droneSerialNumber = medication.get().getDroneId();
+            DroneDto droneDto = droneService.getDroneById(droneSerialNumber);
+            List<Medication> medications =  droneDto.getMedicationList();
+            medications.remove(medication.get());
+            droneDto.setMedicationList(medications);
+            droneService.save(droneDto);
             medicationRepository.deleteById(id);
             return;
         }
