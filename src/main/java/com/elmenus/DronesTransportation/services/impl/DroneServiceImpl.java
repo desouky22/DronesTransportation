@@ -8,6 +8,7 @@ import com.elmenus.DronesTransportation.mappers.DroneMapper;
 import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
+import com.elmenus.DronesTransportation.utils.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,16 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public DroneDto save(DroneDto droneDto) {
         Drone drone = droneMapper.mapToEntity(droneDto);
+        Optional<Drone> droneInDatabase = droneRepository.findById(droneDto.getSerialNumber());
+        if(droneInDatabase.isEmpty()){
+            // create it and make it idle by default when register a new drone
+            drone.setState(StateEnum.IDLE);
+        }else{
+            if(drone.getBatteryCapacity() <= 25 && drone.getState() != StateEnum.IDLE){
+                throw new RuntimeException("Cannot make the drone with state = " + drone.getState() + "with battery capacity = "+ drone.getBatteryCapacity());
+            }
+        }
+
         Drone savedDrone = droneRepository.save(drone);
         return droneMapper.mapToDto(savedDrone);
     }
