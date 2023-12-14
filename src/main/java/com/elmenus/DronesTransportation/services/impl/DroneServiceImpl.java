@@ -80,6 +80,12 @@ public class DroneServiceImpl implements DroneService {
         throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
     }
 
+    @Override
+    public List<DroneDto> getAvailableDrones() {
+        List<Drone>  result = droneRepository.findByState(StateEnum.IDLE);
+        return result.stream().map(drone -> droneMapper.mapToDto(drone)).collect(Collectors.toList());
+    }
+
     @Scheduled(fixedRate = 5000)
     public void executeIt(){
         List<Drone> drones = droneRepository.findAll();

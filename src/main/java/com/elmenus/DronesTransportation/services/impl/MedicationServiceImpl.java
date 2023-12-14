@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class MedicationServiceImpl implements MedicationService {
     private MedicationRepository medicationRepository;
     private MedicationMapper medicationMapper;
-
     private DroneService droneService;
 
     @Autowired

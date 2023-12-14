@@ -59,4 +59,9 @@ public class DroneController {
         List<MedicationDto> result =  medicationService.findByDroneId(serialNumber);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @GetMapping("/available")
+    public List<DroneDto> getAvailableDrones(){
+        return droneService.getAvailableDrones();
+    }
 }
