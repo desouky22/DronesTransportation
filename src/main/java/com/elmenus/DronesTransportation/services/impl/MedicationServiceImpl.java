@@ -2,7 +2,6 @@ package com.elmenus.DronesTransportation.services.impl;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
-import com.elmenus.DronesTransportation.domain.entities.Drone;
 import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.errors.DuplicateException;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;

@@ -1,9 +1,7 @@
 package com.elmenus.DronesTransportation.repositories;
 
-import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

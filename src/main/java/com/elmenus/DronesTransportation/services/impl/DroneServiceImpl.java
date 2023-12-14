@@ -1,7 +1,6 @@
 package com.elmenus.DronesTransportation.services.impl;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
-import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.DroneMapper;
@@ -10,8 +9,6 @@ import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.utils.StateEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,13 +21,11 @@ import java.util.stream.Collectors;
 public class DroneServiceImpl implements DroneService {
     private DroneRepository droneRepository;
     private DroneMapper droneMapper;
-    private MedicationMapper medicationMapper;
 
     @Autowired
     public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper, MedicationMapper medicationMapper){
         this.droneRepository = droneRepository;
         this.droneMapper = droneMapper;
-        this.medicationMapper = medicationMapper;
     }
 
     @Override

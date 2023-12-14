@@ -1,8 +1,6 @@
 package com.elmenus.DronesTransportation.services;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
-import com.elmenus.DronesTransportation.domain.dtos.MedicationDto;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
