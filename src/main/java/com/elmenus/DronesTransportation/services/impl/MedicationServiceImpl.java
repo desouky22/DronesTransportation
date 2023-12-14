@@ -111,6 +111,7 @@ public class MedicationServiceImpl implements MedicationService {
             List<Medication> medications =  droneDto.getMedicationList();
             medications.remove(medication.get());
             droneDto.setMedicationList(medications);
+            if(medications.isEmpty())droneDto.setState(StateEnum.IDLE);
             droneService.save(droneDto);
             medicationRepository.deleteById(id);
             return;

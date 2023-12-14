@@ -8,16 +8,20 @@ import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.utils.StateEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.rmi.server.LogStream.log;
 
 
 @Service
+@Slf4j
 public class DroneServiceImpl implements DroneService {
     private DroneRepository droneRepository;
     private DroneMapper droneMapper;
@@ -74,5 +78,22 @@ public class DroneServiceImpl implements DroneService {
             return;
         }
         throw new RecordNotFoundException("There is no Drone with serialNumber = " + serialNumber);
+    }
+
+    @Scheduled(fixedRate = 5000)
+    public void executeIt(){
+        List<Drone> drones = droneRepository.findAll();
+        log.info("===================================================================");
+        int count = 1;
+        for(Drone d: drones){
+            log.info(count + " :" +
+                    d.getState() + " " +
+                    d.getSerialNumber() + " " +
+                    d.getBatteryCapacity() + " " +
+                    d.getModel() + " " +
+                    d.getWeightLimit());
+            count++;
+        }
+        log.info("===================================================================");
     }
 }
