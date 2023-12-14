@@ -55,9 +55,6 @@ public class DroneServiceImpl implements DroneService {
     public DroneDto save(DroneDto droneDto) {
         Drone drone = droneMapper.mapToEntity(droneDto);
         List<Drone> drones = droneRepository.findAll();
-        if(drones.size() >= 10){
-            throw new RuntimeException("you are allowed to register 10 Drones maximum");
-        }
         Optional<Drone> droneInDatabase = droneRepository.findById(droneDto.getSerialNumber());
         if(droneInDatabase.isEmpty()){
             // create it and make it idle by default when register a new drone
@@ -66,6 +63,9 @@ public class DroneServiceImpl implements DroneService {
             if(drone.getBatteryCapacity() <= 25 && drone.getState() != StateEnum.IDLE){
                 throw new RuntimeException("Cannot make the drone with state = " + drone.getState() + "with battery capacity = "+ drone.getBatteryCapacity());
             }
+        }
+        if(drones.size() >= 10){
+            throw new RuntimeException("you are allowed to register 10 Drones maximum");
         }
         Drone savedDrone = droneRepository.save(drone);
         return droneMapper.mapToDto(savedDrone);
