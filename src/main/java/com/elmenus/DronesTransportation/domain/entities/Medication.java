@@ -49,4 +49,13 @@ public class Medication {
 
     @Column(name = "drone_id")
     private String droneId;
+
+    public Medication(String name, Double weight, String code, byte[] image, Drone drone, String droneId) {
+        this.name = name;
+        this.weight = weight;
+        this.code = code;
+        this.image = image;
+        this.drone = drone;
+        this.droneId = droneId;
+    }
 }

@@ -4,7 +4,6 @@ import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.DroneMapper;
-import com.elmenus.DronesTransportation.mappers.MedicationMapper;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.utils.StateEnum;
@@ -17,8 +16,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.rmi.server.LogStream.log;
-
 
 @Service
 @Slf4j
@@ -27,7 +24,7 @@ public class DroneServiceImpl implements DroneService {
     private DroneMapper droneMapper;
 
     @Autowired
-    public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper, MedicationMapper medicationMapper){
+    public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper){
         this.droneRepository = droneRepository;
         this.droneMapper = droneMapper;
     }
@@ -54,22 +51,21 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public DroneDto save(DroneDto droneDto) {
         Drone drone = droneMapper.mapToEntity(droneDto);
-        List<Drone> drones = droneRepository.findAll();
-        Optional<Drone> droneInDatabase = droneRepository.findById(droneDto.getSerialNumber());
+        boolean isDroneExist = droneRepository.existsById(droneDto.getSerialNumber());
         Drone savedDrone = null;
-        if(droneInDatabase.isEmpty()){
-            // create it and make it idle by default when register a new drone
+        if(!isDroneExist){
+            int dronesSize = droneRepository.findAll().size();
+            if(dronesSize == 10){
+                throw new RuntimeException("you are allowed to register 10 Drones maximum");
+            }
+            // when creating new Drone make its state IDLE
             drone.setState(StateEnum.IDLE);
-            savedDrone = droneRepository.save(drone);
         }else{
             if(drone.getBatteryCapacity() <= 25 && drone.getState() != StateEnum.IDLE){
                 throw new RuntimeException("Cannot make the drone with state = " + drone.getState() + " with battery capacity = "+ drone.getBatteryCapacity());
             }
-            savedDrone = droneRepository.save(drone);
         }
-        if(drones.size() > 10){
-            throw new RuntimeException("you are allowed to register 10 Drones maximum");
-        }
+        savedDrone = droneRepository.save(drone);
         return droneMapper.mapToDto(savedDrone);
     }
 
