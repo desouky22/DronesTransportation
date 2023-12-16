@@ -1,6 +1,6 @@
 package com.elmenus.DronesTransportation.services;
 
-import com.elmenus.DronesTransportation.DronesMedicationsTestUtils;
+import com.elmenus.DronesTransportation.utils.DroneTestUtils;
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
@@ -8,7 +8,6 @@ import com.elmenus.DronesTransportation.mappers.impl.DroneMapperImpl;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.impl.DroneServiceImpl;
 import com.elmenus.DronesTransportation.utils.ModelEnum;
-import com.elmenus.DronesTransportation.utils.StateEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,10 +35,10 @@ public class DroneServiceTest {
 
     @Test
     public void findAllDronesTest(){
-        Drone droneA = DronesMedicationsTestUtils.createDroneA();
-        DroneDto droneDtoA = DronesMedicationsTestUtils.createDroneDtoA();
-        List<Drone> dronesA = DronesMedicationsTestUtils.createDroneListA();
-        List<DroneDto> dronesDtoA = DronesMedicationsTestUtils.createDroneDtoListA();
+        Drone droneA = DroneTestUtils.createDroneA();
+        DroneDto droneDtoA = DroneTestUtils.createDroneDtoA();
+        List<Drone> dronesA = DroneTestUtils.createDroneListA();
+        List<DroneDto> dronesDtoA = DroneTestUtils.createDroneDtoListA();
 
         Mockito.when(droneRepository.findAll()).thenReturn(dronesA);
         Mockito.when(droneMapper.mapToDto(droneA)).thenReturn(droneDtoA);
@@ -51,8 +50,8 @@ public class DroneServiceTest {
 
     @Test
     public void findDroneByIdTest(){
-        Drone drone = DronesMedicationsTestUtils.createDroneA();
-        DroneDto droneDto = DronesMedicationsTestUtils.createDroneDtoA();
+        Drone drone = DroneTestUtils.createDroneA();
+        DroneDto droneDto = DroneTestUtils.createDroneDtoA();
 
         Mockito.when(droneRepository.findById(Mockito.anyString())).thenReturn(Optional.of(drone));
         Mockito.when(droneMapper.mapToDto(drone)).thenReturn(droneDto);
@@ -71,7 +70,7 @@ public class DroneServiceTest {
 
     @Test
     public void isDroneExistReturnsTrueTest(){
-        DroneDto droneDtoA = DronesMedicationsTestUtils.createDroneDtoA();
+        DroneDto droneDtoA = DroneTestUtils.createDroneDtoA();
 
         Mockito.when(droneRepository.existsById(droneDtoA.getSerialNumber())).thenReturn(true);
 
@@ -82,7 +81,7 @@ public class DroneServiceTest {
 
     @Test
     public void isDroneExistReturnsFalseTest(){
-        DroneDto droneDtoA = DronesMedicationsTestUtils.createDroneDtoA();
+        DroneDto droneDtoA = DroneTestUtils.createDroneDtoA();
 
         Mockito.when(droneRepository.existsById(droneDtoA.getSerialNumber())).thenReturn(false);
 
@@ -94,8 +93,8 @@ public class DroneServiceTest {
     @Test
     public void createValidDroneTest(){
         // valid drone
-        Drone drone = DronesMedicationsTestUtils.createDroneA();
-        DroneDto droneDto = DronesMedicationsTestUtils.createDroneDtoA();
+        Drone drone = DroneTestUtils.createDroneA();
+        DroneDto droneDto = DroneTestUtils.createDroneDtoA();
 
         Mockito.when(droneRepository.save(drone)).thenReturn(drone);
         Mockito.when(droneMapper.mapToDto(drone)).thenReturn(droneDto);
@@ -108,11 +107,11 @@ public class DroneServiceTest {
 
     @Test
     public void createInValidDroneAfterCreatingTenDronesBeforeItTest(){
-        Drone drone = DronesMedicationsTestUtils.createDroneA();
-        DroneDto droneDto = DronesMedicationsTestUtils.createDroneDtoA();
+        Drone drone = DroneTestUtils.createDroneA();
+        DroneDto droneDto = DroneTestUtils.createDroneDtoA();
 
         Mockito.when(droneRepository.existsById(drone.getSerialNumber())).thenReturn(false);
-        Mockito.when(droneRepository.findAll()).thenReturn(DronesMedicationsTestUtils.createDroneListWithSizeEqualToTen());
+        Mockito.when(droneRepository.findAll()).thenReturn(DroneTestUtils.createDroneListWithSizeEqualToTen());
         Mockito.when(droneMapper.mapToEntity(droneDto)).thenReturn(drone);
 
         Assertions.assertThrows(RuntimeException.class, () -> underTest.save(droneDto));
@@ -121,10 +120,10 @@ public class DroneServiceTest {
 
     @Test
     public void updateValidDroneTest(){
-        Drone droneA = DronesMedicationsTestUtils.createDroneA();
-        DroneDto droneDtoA = DronesMedicationsTestUtils.createDroneDtoA();
-        Drone updatedDroneB = DronesMedicationsTestUtils.createDroneB();
-        DroneDto updatedDroneDtoB = DronesMedicationsTestUtils.createDroneDtoB();
+        Drone droneA = DroneTestUtils.createDroneA();
+        DroneDto droneDtoA = DroneTestUtils.createDroneDtoA();
+        Drone updatedDroneB = DroneTestUtils.createDroneB();
+        DroneDto updatedDroneDtoB = DroneTestUtils.createDroneDtoB();
 
         Mockito.when(droneRepository.existsById(droneA.getSerialNumber())).thenReturn(true);
         Mockito.when(droneRepository.save(updatedDroneB)).thenReturn(updatedDroneB);
@@ -141,10 +140,10 @@ public class DroneServiceTest {
 
     @Test
     public void updateInValidDroneTest(){
-        Drone droneA = DronesMedicationsTestUtils.createDroneA();
-        DroneDto droneDtoA = DronesMedicationsTestUtils.createDroneDtoA();
-        Drone updatedDroneB = DronesMedicationsTestUtils.createDroneB();
-        DroneDto updatedDroneDtoB = DronesMedicationsTestUtils.createDroneDtoB();
+        Drone droneA = DroneTestUtils.createDroneA();
+        DroneDto droneDtoA = DroneTestUtils.createDroneDtoA();
+        Drone updatedDroneB = DroneTestUtils.createDroneB();
+        DroneDto updatedDroneDtoB = DroneTestUtils.createDroneDtoB();
 
         Mockito.when(droneRepository.existsById(droneDtoA.getSerialNumber())).thenReturn(true);
         Mockito.when(droneRepository.save(droneA)).thenReturn(droneA);
@@ -180,10 +179,10 @@ public class DroneServiceTest {
 
     @Test
     public void getAvailableDronesTest(){
-        List<DroneDto> droneDtoListA = DronesMedicationsTestUtils.createDroneDtoListA();
-        List<Drone> droneListA = DronesMedicationsTestUtils.createDroneListA();
-        DroneDto droneDtoA = DronesMedicationsTestUtils.createDroneDtoA();
-        Drone droneA = DronesMedicationsTestUtils.createDroneA();
+        List<DroneDto> droneDtoListA = DroneTestUtils.createDroneDtoListA();
+        List<Drone> droneListA = DroneTestUtils.createDroneListA();
+        DroneDto droneDtoA = DroneTestUtils.createDroneDtoA();
+        Drone droneA = DroneTestUtils.createDroneA();
 
         Mockito.when(droneRepository.findByState(Mockito.any())).thenReturn(droneListA);
         Mockito.when(droneMapper.mapToDto(droneA)).thenReturn(droneDtoA);
