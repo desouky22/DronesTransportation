@@ -63,6 +63,7 @@ public class MedicationServiceImpl implements MedicationService {
                 totalWeight += m.getWeight();
             }
             if(totalWeight + medicationDto.getWeight() > drone.getWeightLimit()){
+                System.out.println(totalWeight + medicationDto.getWeight());
                 throw new RuntimeException("Cannot add this medication to this drone because of the weight limit");
             }
         }
