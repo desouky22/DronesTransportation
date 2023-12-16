@@ -2,9 +2,11 @@ package com.elmenus.DronesTransportation.services.impl;
 
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
+import com.elmenus.DronesTransportation.domain.entities.Medication;
 import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.DroneMapper;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
+import com.elmenus.DronesTransportation.repositories.MedicationRepository;
 import com.elmenus.DronesTransportation.services.DroneService;
 import com.elmenus.DronesTransportation.utils.StateEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +25,13 @@ public class DroneServiceImpl implements DroneService {
     private DroneRepository droneRepository;
     private DroneMapper droneMapper;
 
+    private MedicationRepository medicationRepository;
+
     @Autowired
-    public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper){
+    public DroneServiceImpl(DroneRepository droneRepository, DroneMapper droneMapper, MedicationRepository medicationRepository){
         this.droneRepository = droneRepository;
         this.droneMapper = droneMapper;
+        this.medicationRepository = medicationRepository;
     }
 
     @Override
@@ -72,6 +77,11 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public void deleteById(String serialNumber) {
         if(droneRepository.existsById(serialNumber)){
+            List<Medication> medicationList = medicationRepository.findByDroneId(serialNumber);
+            for(Medication m: medicationList){
+                m.setDroneId(null);
+                medicationRepository.save(m);
+            }
             droneRepository.deleteById(serialNumber);
             return;
         }

@@ -1,5 +1,7 @@
 package com.elmenus.DronesTransportation.services;
 
+import com.elmenus.DronesTransportation.domain.entities.Medication;
+import com.elmenus.DronesTransportation.repositories.MedicationRepository;
 import com.elmenus.DronesTransportation.utils.DroneTestUtils;
 import com.elmenus.DronesTransportation.domain.dtos.DroneDto;
 import com.elmenus.DronesTransportation.domain.entities.Drone;
@@ -7,6 +9,7 @@ import com.elmenus.DronesTransportation.errors.RecordNotFoundException;
 import com.elmenus.DronesTransportation.mappers.impl.DroneMapperImpl;
 import com.elmenus.DronesTransportation.repositories.DroneRepository;
 import com.elmenus.DronesTransportation.services.impl.DroneServiceImpl;
+import com.elmenus.DronesTransportation.utils.MedicationTestUtils;
 import com.elmenus.DronesTransportation.utils.ModelEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,6 +29,9 @@ import java.util.Optional;
 public class DroneServiceTest {
     @Mock
     private DroneRepository droneRepository;
+
+    @Mock
+    private MedicationRepository medicationRepository;
 
     @Mock
     private DroneMapperImpl droneMapper;
@@ -160,6 +166,13 @@ public class DroneServiceTest {
     public void deleteByIdExistTest(){
         String serialNumber = "1";
 
+        Medication medicationA = MedicationTestUtils.createMedicationA();
+        medicationA.setDroneId(null);
+        List<Medication> medicationListA = MedicationTestUtils.createMedicationListA();
+
+
+        Mockito.when(medicationRepository.findByDroneId(serialNumber)).thenReturn(medicationListA);
+        Mockito.when(medicationRepository.save(medicationA)).thenReturn(medicationA);
         Mockito.when(droneRepository.existsById(serialNumber)).thenReturn(true);
 
         underTest.deleteById(serialNumber);
