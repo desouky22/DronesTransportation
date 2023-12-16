@@ -60,7 +60,7 @@ public class MedicationControllerIT {
     @Test
     public void deleteMedicationByIdExistTest() throws Exception {
         mockMvc
-                .perform(MockMvcRequestBuilders.delete("/medications/1"))
+                .perform(MockMvcRequestBuilders.delete("/medications/2"))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
