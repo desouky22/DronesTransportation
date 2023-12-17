@@ -28,4 +28,4 @@ https://documenter.getpostman.com/view/23485544/2s9Ykn8hJu
 ### Medication endpoints
 https://documenter.getpostman.com/view/23485544/2s9Ykn8hJw
 
-###### note: these endpoints will now run because the service is not hosted on a server, it's just an example of the structure of requests body
+###### note: these endpoints will not run because the service is not hosted on a server, it's just an example of the structure of requests body
